@@ -1,10 +1,13 @@
 import { headers } from 'next/headers'
 
+import { getLoc } from '@/actions/location'
 import { Search } from './_components/search'
 
 export default async function Page() {
   const header = headers()
   const ip = (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0]
+
+  const location = await getLoc(ip)
 
   return (
     <main className="min-h-screen flex flex-col items-center">
@@ -20,7 +23,7 @@ export default async function Page() {
 
         <Search />
 
-        <p>{ip}</p>
+        {location && <p>{JSON.stringify(location, null, 2)}</p>}
       </div>
     </main>
   )
