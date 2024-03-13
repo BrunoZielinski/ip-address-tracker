@@ -1,10 +1,15 @@
+import { headers } from 'next/headers'
+
 import { Search } from './_components/search'
 import { getUserIp } from '@/actions/location'
 
 export default async function Page() {
+  const header = headers()
+  const ip = (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0]
+
   const userIp = await getUserIp()
 
-  console.log(userIp)
+  console.log(ip)
 
   return (
     <main className="min-h-screen flex flex-col items-center">
@@ -20,7 +25,7 @@ export default async function Page() {
 
         <Search />
 
-        <p>{userIp}</p>
+        <p>{ip}</p>
       </div>
     </main>
   )
