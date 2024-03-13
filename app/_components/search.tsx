@@ -28,6 +28,9 @@ export const Search = ({
       />
 
       <button
+        type="button"
+        title="Search"
+        aria-label="Search"
         onClick={handleSearch}
         disabled={!value || isLoading}
         className="bg-gray-900 text-white px-5 py-3 rounded-r-2xl hover:bg-gray-800 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -37,6 +40,8 @@ export const Search = ({
         ) : (
           <ChevronRight className="size-5 text-white" />
         )}
+
+        <span className="sr-only">Search</span>
       </button>
     </div>
   )
