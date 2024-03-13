@@ -1,30 +1,34 @@
-import { headers } from 'next/headers'
-
 import { getLoc } from '@/actions/location'
-import { Search } from './_components/search'
+import { Client } from './_components/client'
 
 export default async function Page() {
-  const header = headers()
-  const ip = (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0]
+  const location = await getLoc()
 
-  const location = await getLoc(ip)
+  if (!location)
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          className="animate-spin size-10 text-black"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 12a9 9 0 1 1-6.219-8.56"
+          />
+        </svg>
+      </main>
+    )
 
   return (
     <main className="min-h-screen flex flex-col items-center">
-      <div
-        className="bg-cover bg-center w-full px-4 flex items-center justify-center flex-col py-8 gap-4"
-        style={{
-          backgroundImage: 'url(/pattern-bg.png)',
-        }}
-      >
-        <h1 className="text-center font-medium text-white [font-size:_clamp(1.5rem,5vw,2rem)]">
-          IP Address Tracker
-        </h1>
-
-        <Search />
-
-        {location && <p>{JSON.stringify(location, null, 2)}</p>}
-      </div>
+      <Client initialData={location} />
     </main>
   )
 }
