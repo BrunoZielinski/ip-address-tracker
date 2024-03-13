@@ -19,6 +19,8 @@ export default async function Page() {
         </h1>
 
         <Search />
+
+        <p>{userIp}</p>
       </div>
     </main>
   )
